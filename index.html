@@ -1,115 +1,105 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <title>MCA</title>
+    <title>Task List</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+        }
+
+        .completed {
+            color: gray;
+        }
+
+        .task {
+            margin: 15px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <header>
-        <center>
-            <h1>MCA</h1>
-        </center>
-    </header>
+    <input type="text" placeholder="Enter text" id="input">
 
-    <nav>
-        <a href="#student">STUDENT DETAILS</a>
-        <a href="#faculty">FACULTY</a>
-        <a href="#subject">SUBJECT</a>
-    </nav>
+    <button onclick="createtask()">Create</button>
 
-    <main>
+    <h1>Task List</h1>
 
-        <section>
-            <figure>
-               <img src="C:\Users\ELCOT\Pictures\classroom.jpg" width="200" hight="200">
-                <figcaption>Department of MCA</figcaption>
-            </figure>
-        </section>
+    <div id="list"></div>
 
-        <section id="student">
-            <h2>Student Details</h2>
-            <p>Details of MCA students</p>
-        </section>
+    <script>
 
-        <section id="faculty">
-            <h2>Faculty</h2>
-            <p>Details of MCA faculty</p>
-        </section> 
-<section id="student">
-    <h2>Student Details</h2>
+        function createtask() {
 
-    <table border="1">
-        <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            <th>Roll No</th>
-            <th>Email</th>
-        </tr>
+            let task = document.getElementById("input").value.trim();
 
-        <tr>
-            <td>1</td>
-            <td>Sangeetha</td>
-            <td>MCA001</td>
-            <td>Sangeetha@gmail.com</td>
-        </tr>
+            if (task == "") {
+                alert("Enter the text");
+                return;
+            }
 
-        <tr>
-            <td>2</td>
-            <td>nisha</td>
-            <td>MCA002</td>
-            <td>nisha@gmail.com</td>
-        </tr>
-    </table>
-</section>
+            let tasks = document.querySelectorAll(".task h3");
 
+            for (let t of tasks) {
+                if (t.textContent.toLowerCase() == task.toLowerCase()) {
+                    alert("Task already exists");
+                    return;
+                }
+            }
 
-<section id="faculty">
-    <h2>Faculty Details</h2>
+            let div = document.createElement("div");
+            div.className = "task";
+            let art = document.createElement("h3");
+            art.textContent = task;
+            let del = document.createElement("button");
+            del.textContent = "Delete";
 
-    <table border="1">
-        <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            <th>Roll No</th>
-            <th>Email</th>
-        </tr>
+            del.onclick = function() {
+                div.remove();
+            };
 
-        <tr>
-             <tr>
-            <td>1</td>
-            <td>Dr. varsha mam</td>
-            <td>mca001</td>
-            <td>varsha@gmail.com</td>
-        </tr>
+            let complete = document.createElement("button");
+            complete.textContent = "Complete";
 
-        <tr>
-            <td>2</td>
-            <td>Dr. sneha mam</td>
-            <td>mca002</td>
-            <td>sneha.faculty@gmail.com</td>
-        </tr>
-    </table>
-</section>
-<section id="subject">
-    <h2>Subject Details</h2>
+            complete.onclick = function() {
+                art.classList.toggle("completed");
+            };
 
-    <table border="1">
-        <tr>
-            <th>S.No</th>
-            <th>Name</th>
-            
-        </tr>
+            let edit = document.createElement("button");
+            edit.textContent = "Edit";
 
-        <tr>
-             <tr>
-            <td>1</td>
-            <td>Frendend Frameworks</td>
-            
-        </tr>
+            edit.onclick = function() {
 
-        <tr>
-            <td>2</td>
-            <td>communication</td>
-        </tr>
-    </table>
-</section>
+                let newtask = prompt("Enter new task", art.textContent);
+
+                if (newtask == null || newtask.trim() == "") {
+                    return;
+                }
+
+                newtask = newtask.trim();
+
+                for (let t of document.querySelectorAll(".task h3")) {
+                    if (t !== art &&
+                        t.textContent.toLowerCase() == newtask.toLowerCase()) {
+                        alert("Task already exists");
+                        return;
+                    }
+                }
+
+                art.textContent = newtask;
+            };
+            div.appendChild(art);
+            div.appendChild(edit);
+            div.appendChild(del);
+            div.appendChild(complete);
+            document.getElementById("list").appendChild(div);
+            document.getElementById("input").value = "";
+
+        }
+
+    </script>
+
+</body>
+</html>
